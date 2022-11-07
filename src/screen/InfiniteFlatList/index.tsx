@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 import { AlbumCard } from '../../components/albumCard';
 import { SearchInput } from '../../components/searchInput';
 import { getSerachList, iTunesMusic } from '../../helper/api';
@@ -7,20 +7,35 @@ import { ButtonText, Container } from '../../theme/styles';
 
 export const InfiniteFlatList = () => {
   const [albums, setAlbums] = useState<iTunesMusic[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [term, setTerm] = useState<string>('');
 
-  const getData = async (term: string) => {
-    const result = await getSerachList(term);
+  const getData = async (text: string) => {
+    !term && setTerm(text);
+    if (term && term !== text) {
+      setTerm(text);
+      setPage(1);
+    }
+
+    const result = await getSerachList(text, page);
+
+    if (result.length === albums.length) return;
+
     setAlbums(result);
+    setPage(page + 1);
   };
 
   return (
     <Container>
       <SearchInput callbackSearch={getData} />
-      <ScrollView>
-        {albums.map((album, index) => (
-          <AlbumCard key={index} album={album} />
-        ))}
-      </ScrollView>
+      <FlatList
+        style={{ width: '100%' }}
+        data={albums}
+        renderItem={({ item, index }) => <AlbumCard key={index} album={item} />}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={() => getData(term)}
+        onEndReachedThreshold={1}
+      />
     </Container>
   );
 };

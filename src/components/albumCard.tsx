@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 import styled from 'styled-components/native';
+import { WIDTH } from '../constant/size';
 import { iTunesMusic } from '../helper/api';
 import { AppColor } from '../theme/myTheme';
 
@@ -27,7 +28,7 @@ const AlbumInfo = styled(View)``;
 
 const AlbumTitle = styled(Text)`
   color: ${AppColor.font};
-  font-size: 16px;
+  font-size: ${WIDTH * 0.04}px;
   font-weight: 600;
   margin-bottom: 10px;
 `;
@@ -41,12 +42,15 @@ const AlbumArtist = styled(Text)`
 export const AlbumCard = ({ album }: IAlbumCard) => {
   const { artworkUrl100, artistName, collectionName } = album;
 
+  const trimText = (text: string, limit: number) =>
+    text.length > limit ? `${text.slice(0, limit)}...` : text;
+
   return (
     <Wrapper>
       <ArtWork source={{ uri: artworkUrl100 }} />
       <AlbumInfo>
-        <AlbumTitle>{collectionName}</AlbumTitle>
-        <AlbumArtist>{artistName}</AlbumArtist>
+        <AlbumTitle>{trimText(collectionName, 26)}</AlbumTitle>
+        <AlbumArtist>{trimText(artistName, 26)}</AlbumArtist>
       </AlbumInfo>
     </Wrapper>
   );

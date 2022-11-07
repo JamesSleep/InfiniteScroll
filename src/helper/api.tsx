@@ -4,12 +4,13 @@ axios.defaults.headers.common = {
   'Content-Type': 'application/json',
   Authorization: 'ec02ed6e95634377b257a80ed46d47c0',
 };
-axios.defaults.baseURL = 'https://itunes.apple.com/search';
+axios.defaults.baseURL = 'https://itunes.apple.com';
 
 const params = {
-  limit: 10,
   country: 'KR',
   media: 'music',
+  entity: 'album',
+  attribute: 'genreIndex',
 };
 
 export interface iTunesMusic {
@@ -43,9 +44,14 @@ export interface iTunesMusic {
   primaryGenreName: string;
 }
 
-export const getSerachList = async (term: string): Promise<iTunesMusic[]> => {
+export const getSerachList = async (
+  term: string,
+  page?: number,
+): Promise<iTunesMusic[]> => {
   try {
-    const { data } = await axios.get('', { params: { term, ...params } });
+    const { data } = await axios.get('/search', {
+      params: { term, ...params, limit: page ? page * 10 : 10 },
+    });
 
     console.log(JSON.stringify(data.results, null, 2));
 
