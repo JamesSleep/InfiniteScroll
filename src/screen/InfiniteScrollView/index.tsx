@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { NativeScrollEvent, ScrollView, Text, View } from 'react-native';
 import { AlbumCard } from '../../components/albumCard';
 import { SearchInput } from '../../components/searchInput';
@@ -30,7 +30,7 @@ export const InfiniteScrollView = () => {
     contentOffset,
     contentSize,
   }: NativeScrollEvent) => {
-    const paddingToBottom = 20;
+    const paddingToBottom = 100;
     return (
       layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom
@@ -47,7 +47,7 @@ export const InfiniteScrollView = () => {
             getData(term);
           }
         }}
-        scrollEventThrottle={200}
+        scrollEventThrottle={100}
       >
         {albums.length > 0 &&
           albums.map((album, index) => <AlbumCard key={index} album={album} />)}

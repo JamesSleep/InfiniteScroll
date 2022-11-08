@@ -34,7 +34,7 @@ export const InfiniteFlatList = () => {
         renderItem={({ item, index }) => <AlbumCard key={index} album={item} />}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={() => getData(term)}
-        onEndReachedThreshold={1}
+        onEndReachedThreshold={0.5}
       />
     </Container>
   );

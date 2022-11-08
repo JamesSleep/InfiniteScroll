@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 
 axios.defaults.headers.common = {
   'Content-Type': 'application/json',
-  Authorization: 'ec02ed6e95634377b257a80ed46d47c0',
 };
 axios.defaults.baseURL = 'https://itunes.apple.com';
 
